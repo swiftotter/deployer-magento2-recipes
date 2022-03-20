@@ -1,7 +1,6 @@
 {
-  "name": "jalogut/magento2-deployer-plus",
-  "description": "Magento 2 deployment tool based on deployer.org",
-  "keywords": ["magento2", "deployment", "deployer", "deploy", "tool"],
+  "name": "swiftotter/deployer-magento2-recipes",
+  "description": "Extended version of the Magento 2 Deployer recipe set.",
   "license": [
     "GPL-3.0"
   ],
@@ -9,6 +8,10 @@
     {
       "name": "Juan Alonso",
       "email": "juan.jalogut@gmail.com"
+    },
+    {
+      "name": "Łukasz Bajsarowicz",
+      "email": "lukasz@swiftotter.com"
     }
   ],
   "require": {
