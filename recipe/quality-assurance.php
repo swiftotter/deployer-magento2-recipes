@@ -9,11 +9,17 @@ require_once(__DIR__ . '/magento_2_1/files.php');
  * Task `qa:build` verify the code does not break the build process (valid Composer, DI compilation and Static assets)
  */
 desc('Magento 2 Quality Assurance');
-task('qa:build', [
-    'composer:validate',
-    'files:compile',
-    'files:static_assets'
-]);
+task('qa:build', function () {
+    set('deploy_path', '.');
+    set('release_path', '.');
+    set('current_path', '.');
+    $origStaticOptions = get('static_deploy_options');
+    set('static_deploy_options', '-f ' . $origStaticOptions);
+
+    invoke('composer:validate');
+    invoke('files:compile');
+    invoke('files:static_assets');
+});
 
 /**
  * @see https://getcomposer.org/doc/03-cli.md#validate
