@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer;
 
-use Deployer\Exception\RuntimeException;
+use Deployer\Exception\RunException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 const OUTPUT_CONFIG_IMPORT_NEEDED = 'This command is unavailable right now. ' .
@@ -24,7 +24,7 @@ set('config_import_needed', function () {
         if (trim($e->getProcess()->getOutput()) == OUTPUT_CONFIG_IMPORT_NEEDED) {
             return true;
         }
-    } catch (RuntimeException $e) {
+    } catch (RunException $e) {
         if (trim($e->getOutput()) == OUTPUT_CONFIG_IMPORT_NEEDED) {
             return true;
         }
