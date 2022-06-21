@@ -33,7 +33,7 @@ task('build', function () {
     invoke('config:remove-dev-modules');
     invoke('files:generate');
     invoke('artifact:package');
-})->local();
+})->onHost('build');
 
 desc('Deploy artifact');
 task('deploy-artifact', [
