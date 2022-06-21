@@ -21,13 +21,17 @@ set('artifact_path', function () {
     return get('artifact_dir') . '/' . get('artifact_file');
 });
 
-task('artifact:package', 'tar --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} .');
+task('artifact:package', function () {
+    run('tar --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} .');
+});
 
 task('artifact:upload', function () {
     upload(get('artifact_path'), '{{release_path}}');
 });
 
-task('artifact:extract', '
-	tar -xzpf {{release_path}}/{{artifact_file}} -C {{release_path}};
-	rm -rf {{release_path}}/{{artifact_file}}
-');
+task('artifact:extract', function () {
+    run(
+        'tar -xzpf {{release_path}}/{{artifact_file}} -C {{release_path}};'
+        . 'rm -rf {{release_path}}/{{artifact_file}}'
+    );
+});

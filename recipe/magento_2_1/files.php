@@ -13,12 +13,20 @@ namespace Deployer;
 set('languages', 'en_US');
 set('static_deploy_options', '--exclude-theme=Magento/blank');
 
-task('files:compile', '{{bin/php}} {{magento_bin}} setup:di:compile');
-task('files:optimize-autoloader', '{{bin/composer}} dump-autoload --no-dev --optimize --apcu');
-task('files:static_assets', '{{bin/php}} {{magento_bin}} setup:static-content:deploy {{languages}} {{static_deploy_options}}');
+task('files:compile', function () {
+    run('{{bin/php}} {{magento_bin}} setup:di:compile');
+});
+task('files:optimize-autoloader', function () {
+    run('{{bin/composer}} dump-autoload --no-dev --optimize --apcu');
+});
+task('files:static_assets', function () {
+    run('{{bin/php}} {{magento_bin}} setup:static-content:deploy {{languages}} {{static_deploy_options}}');
+});
 task(
     'files:permissions',
-    'cd {{magento_dir}} && chmod -R g+w var vendor pub/static pub/media app/etc && chmod u+x bin/magento'
+    function () {
+        run('cd {{magento_dir}} && chmod -R g+w var vendor pub/static pub/media app/etc && chmod u+x bin/magento');
+    }
 );
 
 desc('Generate Magento Files');
