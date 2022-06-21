@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer;
 
-task('cache:clear:magento', '{{bin/php}} {{magento_bin}} cache:flush');
+task('cache:clear:magento', function () { run('{{bin/php}} {{magento_bin}} cache:flush'); });
 
 task('cache:clear', function () {
     invoke('cache:clear:magento');
