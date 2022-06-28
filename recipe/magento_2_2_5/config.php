@@ -17,7 +17,7 @@ const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 
 set('config_import_needed', function () {
     try {
-        run('{{bin/php}} {{release_path}}/{{magento_bin}} app:config:status');
+        run('{{bin/php}} {{release_path}}/{{magento_bin}} app:config:status', [], null, null, null, null, null, true);
     } catch (ProcessFailedException $e) {
         if ($e->getProcess()->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
             return true;
