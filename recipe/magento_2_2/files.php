@@ -8,5 +8,5 @@ namespace Deployer;
 // Also see https://github.com/jalogut/magento2-deployer-plus/issues/29
 task(
     'files:remove-generated',
-    'cd {{magento_dir}} && rm -rf generated/*'
+    function () { run('cd {{magento_dir}} && rm -rf generated/*'); }
 );

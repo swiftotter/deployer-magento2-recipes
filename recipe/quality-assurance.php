@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Deployer;
@@ -25,4 +26,6 @@ task('qa:build', function () {
  * @see https://getcomposer.org/doc/03-cli.md#validate
  */
 desc('Validate Composer Files');
-task('composer:validate', '{{bin/composer}} validate --no-check-all --no-check-publish');
+task('composer:validate', function () {
+    run('{{bin/composer}} validate --no-check-all --no-check-publish');
+});

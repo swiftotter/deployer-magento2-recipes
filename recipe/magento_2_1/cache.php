@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace Deployer;
 
-task('cache:clear:magento', '{{bin/php}} {{magento_bin}} cache:flush');
+task('cache:clear:magento', function () {
+    run('cd {{release_path}} && {{bin/php}} {{magento_bin}} cache:flush');
+});
 
 task('cache:clear', function () {
     invoke('cache:clear:magento');
@@ -31,7 +33,7 @@ set('cache_enabled_caches', '');
  * To enable all caches after deployment, configure the following:
  */
 //set('cache_enabled_caches', 'all');
- 
+
 
 /*
  * One can provide specific caches as well.
@@ -58,7 +60,7 @@ set('cache_enabled_caches', '');
 
 task('cache:enable', function () {
     $enabledCaches = get('cache_enabled_caches');
-    
+
     if (empty($enabledCaches)) {
         return;
     }
