@@ -17,13 +17,13 @@ const DB_UPDATE_NEEDED_EXIT_CODE = 2;
 
 set('database_upgrade_needed', function () {
     try {
-        run('{{bin/php}} {{release_path}}/{{magento_bin}} setup:db:status', [], null, null, null, null, null, true);
+        run('{{bin/php}} {{release_path}}/{{magento_bin}} setup:db:status');
     } catch (ProcessFailedException $e) {
         if ($e->getProcess()->getExitCode() == DB_UPDATE_NEEDED_EXIT_CODE) {
             return true;
         }
         throw $e;
-    } catch (RuntimeException $e) {
+    } catch (\Deployer\Exception\RunException $e) {
         if ($e->getExitCode() == DB_UPDATE_NEEDED_EXIT_CODE) {
             return true;
         }
