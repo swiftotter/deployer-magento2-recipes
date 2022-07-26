@@ -13,21 +13,21 @@ namespace Deployer;
 use Deployer\Exception\RuntimeException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-const OUTPUT_CONFIG_IMPORT_NEEDED = 'This command is unavailable right now. ' .
-    'To continue working with it please run app:config:import or setup:upgrade command before.';
+const CONFIG_UPDATE_NEEDED_EXIT_CODE = 2;
 
 set('config_import_needed', function () {
     try {
-        // NOTE: Workaround until "app:config:status" is available on Magento 2.2.3
-        run('{{bin/php}} {{release_path}}/{{magento_bin}} config:set workaround/check/config_status 1');
+        run('{{bin/php}} {{release_path}}/{{magento_bin}} app:config:status --no-interaction', [], null, null, null, null, null, true);
     } catch (ProcessFailedException $e) {
-        if (trim($e->getProcess()->getOutput()) == OUTPUT_CONFIG_IMPORT_NEEDED) {
+        if (trim($e->getProcess()->getExitCode()) == CONFIG_UPDATE_NEEDED_EXIT_CODE) {
             return true;
         }
+        throw $e;
     } catch (RuntimeException $e) {
-        if (trim($e->getOutput()) == OUTPUT_CONFIG_IMPORT_NEEDED) {
+        if (trim($e->getExitCode()) == CONFIG_UPDATE_NEEDED_EXIT_CODE) {
             return true;
         }
+        throw $e;
     }
     return false;
 });
