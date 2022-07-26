@@ -17,13 +17,13 @@ const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 
 set('config_import_needed', function () {
     try {
-        run('{{bin/php}} {{release_path}}/{{magento_bin}} app:config:status', [], null, null, null, null, null, true);
+        run('{{bin/php}} {{release_path}}/{{magento_bin}} app:config:status');
     } catch (ProcessFailedException $e) {
         if ($e->getProcess()->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
             return true;
         }
         throw $e;
-    } catch (RuntimeException $e) {
+    } catch (\Deployer\Exception\RunException $e) {
         if ($e->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
             return true;
         }
