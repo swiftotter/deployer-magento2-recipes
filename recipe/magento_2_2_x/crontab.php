@@ -10,4 +10,6 @@ declare(strict_types=1);
 
 namespace Deployer;
 
-task('crontab:update', function () { run('{{bin/php}} {{magento_bin}} cron:install --force'); });
+task('crontab:update', function () {
+ run('{{bin/php}} {{magento_bin}} cron:install --force');
+});

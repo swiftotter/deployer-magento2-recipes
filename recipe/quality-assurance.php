@@ -23,6 +23,8 @@ task('qa:build', function () {
 });
 
 /**
+ * Execute Composer file validation
+ *
  * @see https://getcomposer.org/doc/03-cli.md#validate
  */
 desc('Validate Composer Files');
