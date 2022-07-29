@@ -57,8 +57,8 @@ task('deploy-artifact', [
     'cache:clear',
     'cache:enable',
     'deploy:unlock',
-    'cleanup',
-    'success',
+    'deploy:cleanup',
+    'deploy:success',
 ]);
 fail('deploy-artifact', 'deploy:failed');
 
@@ -87,6 +87,6 @@ task('deploy', [
     'cache:clear',
     'cache:enable',
     'deploy:unlock',
-    'cleanup',
-    'success',
+    'deploy:cleanup',
+    'deploy:success',
 ]);
