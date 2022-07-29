@@ -61,10 +61,9 @@ set('override_shared_dirs', [
 desc('Deploy project');
 task('deploy', [
     'deploy:info',
-    'deploy:prepare',
+    'deploy:setup',
     'deploy:lock',
     'deploy:release',
-    'deploy:update_code',
     'deploy:vendors',
     'deploy:clear_paths',
     'deploy:shared',
