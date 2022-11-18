@@ -1,0 +1,18 @@
+version: 2
+registries:
+  private-packagist:
+    type: composer-repository
+    url: https://repo.packagist.com/swiftotter/grandstand/swm-tools/
+    username: token
+    password: ${{ secrets.COMPOSER_TOKEN }}
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+  - package-ecosystem: composer
+    directory: "/"
+    registries:
+      - private-packagist
+    schedule:
+      interval: daily
