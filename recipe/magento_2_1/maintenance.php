@@ -13,9 +13,15 @@ namespace Deployer;
 task('maintenance:set', function () {
     # IMPORTANT: do not use {{current_path}} for the "-f" check.
     # {{current_path}} returns error if symlink does not exists
-    test('[ -f {{deploy_path}}/current/{{magento_bin}} ]') ?
-        run('{{bin/php}} {{current_path}}/{{magento_bin}} maintenance:enable') :
+    if (test('[ -f {{deploy_path}}/current/{{magento_bin}} ]')) {
+        if (test('[ -f {{deploy_path}}/current/{{magento_dir}}/var/.maintenance.flag ]')) {
+            run('{{bin/php}} {{current_path}}/{{magento_bin}} maintenance:enable');
+        } else {
+            writeln('Skipped -> maintenance is already set');
+        }
+    } else {
         writeln('Skipped -> current not found');
+    }
 });
 
 task('maintenance:unset', function () {

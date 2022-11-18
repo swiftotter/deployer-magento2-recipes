@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer;
 
-use Deployer\Exception\RuntimeException;
+use Deployer\Exception\RunException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
@@ -23,7 +23,7 @@ set('database_upgrade_needed', function () {
             return true;
         }
         throw $e;
-    } catch (RuntimeException $e) {
+    } catch (RunException $e) {
         if ($e->getExitCode() == DB_UPDATE_NEEDED_EXIT_CODE) {
             return true;
         }

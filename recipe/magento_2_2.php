@@ -38,7 +38,7 @@ task('build', function () {
 desc('Deploy artifact');
 task('deploy-artifact', [
     'deploy:info',
-    'deploy:prepare',
+    'deploy:setup',
     'deploy:lock',
     'deploy:release',
     'artifact:upload',
@@ -57,8 +57,8 @@ task('deploy-artifact', [
     'cache:clear',
     'cache:enable',
     'deploy:unlock',
-    'cleanup',
-    'success',
+    'deploy:cleanup',
+    'deploy:success',
 ]);
 fail('deploy-artifact', 'deploy:failed');
 
@@ -66,10 +66,9 @@ fail('deploy-artifact', 'deploy:failed');
 desc('Deploy project');
 task('deploy', [
     'deploy:info',
-    'deploy:prepare',
+    'deploy:setup',
     'deploy:lock',
     'deploy:release',
-    'deploy:update_code',
     'deploy:vendors',
     'config:remove-dev-modules',
     'deploy:clear_paths',
@@ -87,6 +86,6 @@ task('deploy', [
     'cache:clear',
     'cache:enable',
     'deploy:unlock',
-    'cleanup',
-    'success',
+    'deploy:cleanup',
+    'deploy:success',
 ]);
