@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Deployer;
 
+use Deployer\Exception\GracefulShutdownException;
+
 set('artifact_file', 'artifact.tar.gz');
 set('artifact_dir', 'artifacts');
 set('artifact_excludes_file', __DIR__ . '/../../config/artifact.excludes');
@@ -21,8 +23,13 @@ set('artifact_path', function () {
     return get('artifact_dir') . '/' . get('artifact_file');
 });
 
-task('artifact:package', function () {
-    run('tar --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} .');
+task('artifact:package', function() {
+    if (!test('[ -f {{artifact_excludes_file}} ]')) {
+        throw new GracefulShutdownException(
+            "No artifact excludes file provided, provide one at artifacts/excludes or change location"
+        );
+    }
+    run('tar --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} -C {{magento_dir}} .');
 });
 
 task('artifact:upload', function () {

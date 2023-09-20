@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/* (c) Juan Alonso <juan.jalogut@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
 require_once 'recipe/common.php';
@@ -20,23 +14,23 @@ require_once __DIR__ . '/magento_2_2/crontab.php';
 require_once __DIR__ . '/magento_2_2/files.php';
 require_once __DIR__ . '/magento_2_2/rollback.php';
 
-desc('Build Artifact');
-task('build', function () {
-    set('deploy_path', '.');
-    set('release_path', '.');
-    set('current_path', '.');
-    $origStaticOptions = get('static_deploy_options');
-    set('static_deploy_options', '-f ' . $origStaticOptions);
+task('build', ['build:artifact']);
+task('build:artifact', [
+    'files:remove-generated',
+    'deploy:vendors',
+    'config:remove-dev-modules',
+    'files:generate',
+    'artifact:package'
+]);
 
-    invoke('files:remove-generated');
-    invoke('deploy:vendors');
-    invoke('config:remove-dev-modules');
-    invoke('files:generate');
-    invoke('artifact:package');
-});
+task('build:qa', [
+    'files:remove-generated',
+    'deploy:vendors',
+    'config:remove-dev-modules',
+    'files:generate'
+]);
 
-desc('Deploy artifact');
-task('deploy-artifact', [
+task('deploy:artifact', [
     'deploy:info',
     'deploy:setup',
     'deploy:lock',
@@ -50,7 +44,6 @@ task('deploy-artifact', [
     'cache:clear:if-maintenance',
     'database:upgrade',
     'config:import',
-    //'crontab:update',
     'deploy:override_shared',
     'deploy:symlink',
     'maintenance:unset',
@@ -60,10 +53,7 @@ task('deploy-artifact', [
     'deploy:cleanup',
     'deploy:success',
 ]);
-fail('deploy-artifact', 'deploy:failed');
-
-# ---- Deployment Flow
-desc('Deploy project');
+fail('deploy:artifact', 'deploy:failed');
 task('deploy', [
     'deploy:info',
     'deploy:setup',
@@ -79,7 +69,6 @@ task('deploy', [
     'cache:clear:if-maintenance',
     'database:upgrade',
     'config:import',
-    //'crontab:update',
     'deploy:override_shared',
     'deploy:symlink',
     'maintenance:unset',
@@ -89,3 +78,10 @@ task('deploy', [
     'deploy:cleanup',
     'deploy:success',
 ]);
+
+task('deploy:env', function () {
+    $instancePrefix = substr(hash('sha1', microtime()), -5);
+
+    run('rm -f {{release_path}}/app/etc/env.php && cat {{current_path}}/app/etc/env.php > {{release_path}}/app/etc/env.php');
+    run("{{bin/php}} {{release_path}}/{{magento_bin}} setup:config:set --no-interaction --cache-id-prefix={$instancePrefix}_ --page-cache-id-prefix={$instancePrefix}_");
+});
