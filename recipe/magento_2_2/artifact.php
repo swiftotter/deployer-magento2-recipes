@@ -26,7 +26,11 @@ task('artifact:package', function () {
 });
 
 task('artifact:upload', function () {
-    upload(get('artifact_path'), '{{release_path}}');
+    $artifactPath = get('artifact_path');
+    if (!is_string($artifactPath)) {
+        throw new \RuntimeException('Invalid {{artifact_path}}');
+    }
+    upload($artifactPath, '{{release_path}}', ['options' => ['--bwlimit=4096']]);
 });
 
 task('artifact:extract', function () {
