@@ -13,3 +13,4 @@ namespace Deployer;
 require_once 'recipe/common.php';
 require_once __DIR__ . '/magento_2_2.php';
 require_once __DIR__ . '/magento_2_2_5/config.php';
+require_once __DIR__ . '/magento_2_2/deploy.php';
